@@ -8,8 +8,19 @@ export function login(data) {
     })
 }
 
-export function getInfo(token) {
+export function getUserInfo() {
+    return request({
+        url: '/sys/profile',
+        method: 'post',
+        // 此时需要token 但我们在请求拦截器中注入
+    })
 
+}
+// 根据用户id获取头像
+export function getUserDetailById(id) {
+    return request({
+        url: `/sys/user/${id}`
+    })
 }
 
 export function logout() {

@@ -11,12 +11,15 @@ const whiteList = ['/login', '/404']
 // next() 放过
 // next(false)跳转中止
 // next(地址) 跳转到某个地址
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     nProgress.start()
     if (store.getters.token) {
         if (to.path === '/login') {
             next('/')
         } else {
+            if (!store.getters.userId) {
+                console.log(await store.dispatch('user/getUserInfo'))
+            }
             next()
         }
     } else {
