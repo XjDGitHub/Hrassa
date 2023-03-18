@@ -4,7 +4,7 @@ import store from '@/store'
 import axios from 'axios'
 import { Message } from 'element-ui'
 import { getTimeStamp } from './auth'
-const TimeOut = 3
+const TimeOut = 3600
 const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_API,
     timeout: 5000
