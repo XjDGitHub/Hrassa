@@ -1,20 +1,23 @@
 <template>
   <div class="dashboard-container">
     <div class="dashboard-text">name: {{ name }}</div>
+    <PageTools :showBefore="true">
+      <span slot="before">王丹</span>
+      <el-button slot="after" type="primary">蒋小康</el-button>
+    </PageTools>
+    <ImageUpload></ImageUpload>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'Dashboard',
+  name: "Dashboard",
   computed: {
-    ...mapGetters([
-      'name'
-    ])
-  }
-}
+    ...mapGetters(["name"]),
+  },
+};
 </script>
 
 <style lang="scss" scoped>
