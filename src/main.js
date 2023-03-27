@@ -13,10 +13,12 @@ import store from './store'
 import router from './router'
 import * as directives from './directives'
 import * as filters from '@/filters'
+import checkPermission from './mixin/checkPermission'
 import '@/icons' // icon
 import '@/permission' // permission control
 import Print from 'vue-print-nb'
 Vue.use(Print);
+Vue.mixin(checkPermission)
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明

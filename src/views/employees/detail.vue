@@ -86,7 +86,6 @@ export default {
   },
   methods: {
     async getUserDetailById() {
-      console.log(this.userId);
       this.userInfo = await getUserDetailById(this.userId);
     },
     async saveUser() {

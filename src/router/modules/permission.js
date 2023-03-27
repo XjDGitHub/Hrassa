@@ -1,7 +1,7 @@
 import layout from '@/layout'
 export default {
     path: '/permission',//路径
-    name: 'permission',
+    name: 'permissions',
     component: layout, //至于此处为什么是layout，我理解是因为员工页面也需要在layout的布局（navbar，sidebar），
     // 并在他的二级路由里面展示，并且这是动态路由，不能写在静态路由的children里
     children: [{

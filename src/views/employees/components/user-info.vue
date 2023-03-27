@@ -484,7 +484,6 @@ export default {
     },
     async getUserDetailById() {
       this.userInfo = await getUserDetailById(this.userId);
-      console.log(this.userInfo);
       if (this.userInfo.staffPhoto && this.userInfo.staffPhoto.trim()) {
         this.$refs.staffPhoto.fileList = [
           { url: this.userInfo.staffPhoto, upload: true },

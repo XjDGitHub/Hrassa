@@ -13,7 +13,11 @@
           <el-button size="small" type="danger" @click="exportData"
             >导出</el-button
           >
-          <el-button size="small" type="primary" @click="showDialog = true"
+          <el-button
+            size="small"
+            type="primary"
+            :disabled="checkPermission('POINT-USER-ADD')"
+            @click="showDialog = true"
             >新增员工</el-button
           >
         </template>
@@ -58,16 +62,15 @@
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template v-slot="{ row }">
-              <el-button
-                type="text"
-                size="small"
-                @click="$router.push(`/employees/detail/${row.id}`)"
+              <el-button type="text" size="small" @click="click(row)"
                 >查看</el-button
               >
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button type="text" size="small" @click="editRole(row.id)"
+                >角色</el-button
+              >
               <el-button
                 type="text"
                 size="small"
@@ -103,6 +106,11 @@
     >
       <el-row type="flex" justify="center"> <canvas ref="myCanvas" /> </el-row
     ></el-dialog>
+    <assignRole
+      ref="assignRole"
+      :showRoleDialog.sync="showRoleDialog"
+      :userId="userId"
+    ></assignRole>
   </div>
 </template>
 
@@ -112,10 +120,12 @@ import EmployeeEnum from "@/api/constant/employees";
 import addEmployeeVue from "./components/add-employee.vue";
 import QrCode from "qrcode";
 import { formatDate } from "@/filters";
+import assignRole from "./components/assign-role.vue";
 
 export default {
   components: {
     addEmployeeVue,
+    assignRole,
   },
   data() {
     return {
@@ -127,7 +137,9 @@ export default {
       },
       loading: false,
       showDialog: false,
-      showCodeDialog: false,
+      showCodeDialog: false, //显示二维码
+      showRoleDialog: false, //显示角色
+      userId: null,
     };
   },
   created() {
@@ -224,6 +236,15 @@ export default {
           return item[headers[key]];
         });
       });
+    },
+    async editRole(id) {
+      this.userId = id;
+      await this.$refs.assignRole.getUserDetailById(id);
+      this.showRoleDialog = true;
+    },
+    click(row) {
+      debugger;
+      this.$router.push(`/employees/detail/${row.id}`);
     },
   },
 };

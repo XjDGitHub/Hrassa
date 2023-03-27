@@ -18,7 +18,12 @@
               <el-table-column prop="description" label="描述" />
               <el-table-column label="操作">
                 <template slot-scope="{ row }">
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button
+                    size="small"
+                    type="success"
+                    @click="assignPerm(row.id)"
+                    >分配权限</el-button
+                  >
                   <el-button
                     size="small"
                     type="primary"
@@ -116,6 +121,28 @@
         </el-col>
       </el-row>
     </el-dialog>
+    <el-dialog :visible="showPermDialog" @close="btnPermCancel">
+      <el-tree
+        :data="permData"
+        :props="defaultProps"
+        :default-expand-all="true"
+        :show-checkbox="true"
+        :check-strictly="true"
+        node-key="id"
+        :default-checked-keys="selectCheck"
+        ref="permTree"
+      ></el-tree>
+      <el-row slot="footer">
+        <el-col :span="6">
+          <el-button type="primary" size="small" @click="btnPermOK"
+            >确定</el-button
+          >
+          <el-button size="small" @click="btnPermCancel"
+            >取消</el-button
+          ></el-col
+        >
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
@@ -127,8 +154,11 @@ import {
   updateRole,
   getRoleDetail,
   addRole,
+  assignPerm,
 } from "@/api/setting";
 import { mapGetters } from "vuex";
+import { getPermissionList } from "@/api/permissson";
+import { tranListToTreeData } from "@/utils";
 export default {
   data() {
     return {
@@ -140,12 +170,21 @@ export default {
       },
       formData: {},
       showDialog: false,
+
       roleForm: {},
       rules: {
         name: [
           { required: true, message: "角色名称不能为空", trigger: "blur" },
         ],
       },
+      // 分配权限数据
+      showPermDialog: false,
+      permData: [],
+      defaultProps: {
+        label: "name",
+      },
+      selectCheck: [], // 定义一个数组来接收 已经选中的节点
+      roleId: null, // 用来记录分配角色的id
     };
   },
   computed: {
@@ -201,6 +240,24 @@ export default {
       } catch (error) {
         console.error();
       }
+    },
+    async assignPerm(id) {
+      this.permData = tranListToTreeData(await getPermissionList(id), "0");
+      this.showPermDialog = true;
+      const { permIds } = await getRoleDetail(id);
+      this.selectCheck = permIds;
+      this.roleId = id;
+    },
+    btnPermCancel() {
+      this.selectCheck = [];
+      this.showDialog = false;
+    },
+    async btnPermOK() {
+      await assignPerm({
+        permIds: this.$refs.permTree.getCheckedKeys(),
+        id: this.roleId,
+      });
+      this.showDialog = false;
     },
   },
   created() {
