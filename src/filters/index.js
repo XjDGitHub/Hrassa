@@ -252,6 +252,9 @@ export function checkEmail(rule, value, callback) {
     }
   }
 }
+export function getInteger() { }
+export function getIntegerPoint() { }
+export function importFilexml() { }
 // 英文验证
 export function checkCode(value, callback) {
   var reg = /^[A-Za-z]+$/g

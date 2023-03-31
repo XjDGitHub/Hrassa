@@ -8,6 +8,7 @@ import attendancesRouter from './modules/attendances'
 import salarysRouter from './modules/salarys'
 import settingRouter from './modules/setting'
 import socialRouter from './modules/social'
+import user from './modules/user'
 Vue.use(Router)
 
 /* Layout */
@@ -82,12 +83,14 @@ export const constantRoutes = [
       component: () => import("@/views/import")
     }]
   },
+  user
   // 404 page must be placed at the end !!!
 
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
+  base: '/hr/',
   scrollBehavior: () => ({ y: 0 }),
   routes: [...constantRoutes]
 })

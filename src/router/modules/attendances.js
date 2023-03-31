@@ -1,16 +1,37 @@
-import layout from '@/layout'
-export default {
-    path: '/attendances',//路径
-    name: 'attendances',
-    component: layout, //至于此处为什么是layout，我理解是因为员工页面也需要在layout的布局（navbar，sidebar），
-    // 并在他的二级路由里面展示，并且这是动态路由，不能写在静态路由的children里
-    children: [{
-        path: '',//如果二级路由的path里面社么都不写的情况下，会展示在layout的二级里，表示该路由为当前二级路由的默认路由
-        component: () => import('@/views/attendances'),
-        meta: {
-            title: '考勤' //这里是后续循环时左侧导航栏的名称
-            , icon: 'skill'
 
-        }
-    }]
+import Layout from '@/layout'
+
+const attendRouter = {
+  path: '/attendances',
+  component: Layout,
+  name: 'attendances',
+  children: [
+    {
+      path: '',
+      component: () => import('@/views/attendances'),
+      name: 'attendances',
+      meta: {
+        title: '考勤',
+        icon: 'excel' }
+    },
+    {
+      path: 'archiving',
+      component: () => import('@/views/attendances/historical'),
+      name: 'archiving',
+      hidden: true,
+      meta: {
+        title: '归档'
+      }
+    },
+    {
+      path: 'report/:month',
+      component: () => import('@/views/attendances/report'),
+      name: 'reports',
+      hidden: true,
+      meta: {
+        title: '报表'
+      }
+    }
+  ]
 }
+export default attendRouter

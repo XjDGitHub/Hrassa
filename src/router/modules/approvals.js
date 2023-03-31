@@ -1,15 +1,72 @@
-import layout from '@/layout'
+import Layout from '@/layout'
+
 export default {
-    path: '/approvvals',//路径
-    name: 'approvvals',
-    component: layout, //至于此处为什么是layout，我理解是因为员工页面也需要在layout的布局（navbar，sidebar），
-    // 并在他的二级路由里面展示，并且这是动态路由，不能写在静态路由的children里
-    children: [{
-        path: '',//如果二级路由的path里面社么都不写的情况下，会展示在layout的二级里，表示该路由为当前二级路由的默认路由
-        component: () => import('@/views/approvals'),
-        meta: {
-            title: '审理' //这里是后续循环时左侧导航栏的名称
-            , icon: 'tree-table'
-        }
-    }]
+  path: '/approvals',
+  component: Layout,
+  name: 'approvals',
+  children: [
+    {
+      path: '',
+      component: () => import('@/views/approvals'),
+      name: 'approvals',
+      meta: {
+        title: '审批',
+        icon: 'tree-table'
+      }
+    },
+    {
+      path: 'salaryApproval/:id',
+      component: () => import('@/views/approvals/salary'),
+      name: 'salaryApproval',
+      hidden: true,
+      meta: {
+        title: '工资审核',
+        icon: 'approval', noCache: true }
+    },
+    {
+      path: 'enterApproval/:id',
+      component: () => import('@/views/approvals/enter'),
+      name: 'enterApproval',
+      hidden: true,
+      meta: {
+        title: '入职审核',
+        icon: 'approval', noCache: true }
+    },
+    {
+      path: 'leaveApproval/:id',
+      component: () => import('@/views/approvals/leave'),
+      name: 'leaveApproval',
+      hidden: true,
+      meta: {
+        title: '申请请假',
+        icon: 'approval', noCache: true }
+    },
+    {
+      path: 'quitApproval/:id',
+      component: () => import('@/views/approvals/quit'),
+      name: 'quitApproval',
+      hidden: true,
+      meta: {
+        title: '申请离职',
+        icon: 'approval', noCache: true }
+    },
+    {
+      path: 'overtimeApproval/:id',
+      component: () => import('@/views/approvals/overtime'),
+      name: 'overtimeApproval',
+      hidden: true,
+      meta: {
+        title: '加班申请',
+        icon: 'approval', noCache: true }
+    },
+    {
+      path: 'securitySetting',
+      component: () => import('@/views/approvals/security'),
+      name: 'securitySetting',
+      hidden: true,
+      meta: {
+        title: '设置',
+        icon: 'approval', noCache: true }
+    }
+  ]
 }
